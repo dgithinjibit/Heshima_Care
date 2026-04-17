@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Information about the authenticated woman or girl using the platform.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique Firebase Auth identifier" },
+        "displayName": { "type": "string", "description": "Public name for verification" },
+        "email": { "type": "string", "description": "Contact email" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "didAddress": { "type": "string", "description": "Decentralized identity thumbprint (Security Architecture feature)" }
+      },
+      "required": ["uid", "displayName"]
+    },
+    "Hub": {
+      "title": "Distribution Hub",
+      "description": "A physical center where menstrual products are available.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "county": { "type": "string" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "stockLevel": { "type": "string", "enum": ["High", "Medium", "Low"] },
+        "products": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["name", "county", "location", "stockLevel"]
+    },
+    "AccessEvent": {
+      "title": "Distribution Access Event",
+      "description": "A log of when a resource was accessed, anonymized for profiling.",
+      "type": "object",
+      "properties": {
+        "hubId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "anonymizedUserHash": { "type": "string", "description": "SHA-256 hash of user ID for privacy-preserving profiling" }
+      },
+      "required": ["hubId", "timestamp", "anonymizedUserHash"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "Private user profiles"
+    },
+    "/hubs/{hubId}": {
+      "schema": "Hub",
+      "description": "Publicly searchable distribution points"
+    },
+    "/access_logs/{logId}": {
+      "schema": "AccessEvent",
+      "description": "Anonymized telemetry for the secret service profiling layer"
+    }
+  }
+}

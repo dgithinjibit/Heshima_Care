@@ -1,0 +1,6 @@
+{
+  "name": "Heshima Hub",
+  "description": "Kenya's menstrual dignity platform interlinking users with essential products via secure, location-based services.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}
